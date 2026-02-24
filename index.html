@@ -2,53 +2,63 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Embedded Newsletter</title>
-
-    <!-- Mobile Auto Scaling -->
+    <title>Issuu Embed</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
-        body {
+        html, body {
             margin: 0;
             padding: 0;
-            background-color: #ffffff;
+            height: 100%;
+            background: #ffffff;
+            overflow: hidden;
         }
 
         .embed-container {
             position: relative;
             width: 100%;
-            height: 100vh; /* Full screen height */
-            overflow: hidden;
+            height: 100dvh; /* dynamic mobile height */
         }
 
-        .embed-container iframe {
+        iframe {
             position: absolute;
-            top: 0;
-            left: 0;
+            inset: 0;
             width: 100%;
             height: 100%;
             border: 0;
         }
-
-        /* Optional: Adjust height behavior for smaller phones */
-        @media (max-width: 768px) {
-            .embed-container {
-                height: 100vh;
-            }
-        }
     </style>
 </head>
-
 <body>
 
 <div class="embed-container">
-    <iframe
-        src="https://e.issuu.com/embed.html?d=guestnewslettert&hideIssuuLogo=true&hideShareButton=true&u=makkah-hotel"
+    <iframe id="issuuFrame"
         allow="clipboard-write"
         sandbox="allow-top-navigation allow-top-navigation-by-user-activation allow-downloads allow-scripts allow-same-origin allow-popups allow-modals allow-popups-to-escape-sandbox allow-forms"
         allowfullscreen>
     </iframe>
 </div>
+
+<script>
+    const mobileSrc = "https://e.issuu.com/embed.html?d=guestnewslettert&hideIssuuLogo=true&hideShareButton=true&pageLayout=singlePage&u=makkah-hotel";
+    const desktopSrc = "https://e.issuu.com/embed.html?d=guestnewslettert&hideIssuuLogo=true&hideShareButton=true&u=makkah-hotel";
+
+    const iframe = document.getElementById("issuuFrame");
+
+    function setIframeSource() {
+        if (window.innerWidth <= 768) {
+            iframe.src = mobileSrc;
+        } else {
+            iframe.src = desktopSrc;
+        }
+    }
+
+    // Run on load
+    setIframeSource();
+
+    // Update if screen resizes
+    window.addEventListener("resize", setIframeSource);
+</script>
 
 </body>
 </html>
